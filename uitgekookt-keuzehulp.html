@@ -1,0 +1,318 @@
+<!-- Created by Danny de Kruijk on behalf of Yellowgrape -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Dynamic Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Palanquin:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+html {
+    scroll-behavior: smooth;
+    margin-left: calc(100vw - 100%);
+    margin-right: 0;
+}
+body {
+	padding:0;
+	margin:0 auto;
+	text-align:center;
+    font-family: Palanquin, Arial, Helvetica, Sans-serif;
+    color: #fff;
+	height:100vh;
+}
+h1, h2, h3, h4, h5, p {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 10px;
+}
+.wrapper {
+    height: 100%;
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+#wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    display: none;
+    margin: 0 auto;
+}
+.modal {
+    background: #fff;
+    background-image: url('https://uitgekookt.nl/_next/image?url=https%3A%2F%2Fcdn.uitgekookt.nl%2Fimages%2Fassets%2FHeaders_uitgekookt_home_2560x512_dff51f450f.jpg&w=1920&q=100');
+    background-size: cover;
+    background-position: right;
+    padding: 0;
+    text-align: center;
+    max-width: 600px;
+    max-height: 600px;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    position: relative;
+    top: 10%;
+    border-radius: 5px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.1);
+}
+.wrapper {
+    height: 100%;
+    overflow: auto;
+    scroll-snap-type: y mandatory;
+}
+.section {
+    scroll-snap-align: start;
+    height: 600px;
+    padding: 0 15px 0 15px;
+}
+.close {
+    position: absolute;
+    right: 18px;
+    top: 15px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+}
+.close:hover {
+    opacity: 1;
+}
+.close:before, .close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #fff;
+}
+.close:before {
+    transform: rotate(45deg);
+}
+.close:after {
+    transform: rotate(-45deg);
+}
+.custom {
+    cursor: pointer;
+    display: inline-block;
+	margin-bottom:8px;
+}
+.custom input {
+    display: none;
+}
+.custom__input, .custom__text {
+    vertical-align: middle;
+}
+.custom__text {
+    color: #ccc;
+    margin: 0 8px;
+    transition: color 0.4s;
+}
+input:checked ~ .custom__text {
+    color: #fff;
+}
+.custom__input {
+    border: 3px solid #ccc;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    position: relative;
+    transition: border-color 0.4s;
+}
+.custom__input:after {
+    background-color: #00FF00;
+    content: "";
+    display: block;
+    opacity: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 70%;
+    width: 70%;
+    transform: translate(-50%, -50%);
+    transition: opacity 0.4s;
+}
+input:checked ~ .custom__input {
+    border-color: #00FF00;
+}
+input:checked ~ .custom__input:after {
+    opacity: 1;
+}
+input[type=radio] ~ .custom__input, input[type=radio] ~ .custom__input:after {
+    border-radius: 50%;
+}
+.box {
+    background-color: rgba(0,0,0,0.6);
+    padding: 15px 20px 40px 20px;
+    border-radius: 5px;
+    color: #fff;
+    width: 75%;
+    height: auto;
+    margin: 0 auto;
+    position: relative;
+    top: 15%;
+}
+.button {
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    background: #e7660b;
+    color: #fff;
+    text-decoration: none;
+	display:inline-block;
+}
+#email {
+	border-radius:4px; 
+	padding: 8px 16px;
+	font-size:14px;
+	border:1px solid #eee;
+	width:250px;
+	margin-bottom:5px;
+}
+@media only screen and (max-width: 480px) {
+.box {
+	padding:15px 15px 40px 15px !important;
+	width:90% !important;
+}
+.modal {
+	width:100% !important;
+	max-width:none !important;
+	height:100% !important;
+	max-height:none !important;
+	top:0 !important;
+	border-radius:0 !important;
+}
+}
+</style>
+<script>
+function toggle() {
+  var x = document.getElementById("wrap");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+	  
+  } else {
+    x.style.display = "none";
+  }
+} 	
+</script>
+</head>
+<body translate="no">
+<div style="position:relative;top:25%">
+  <button onclick="toggle()" class="button" style="border:0;">
+	  Open de keuzehulp
+  </button>
+</div>
+<div id="wrap" style="display:none">
+<div class="modal"> 
+<a onclick="toggle()" class="close"></a>
+  <div class="wrapper">
+    <div id="1" class="section">
+      <div class="box">
+        <h2>Laten we beginnen</h2>
+        <p>Kan je wel wat hulp gebruiken met het maken van een keuze? Goed nieuws: Met onderstaande vragen kunnen we je nog beter van dienst zijn.</p>
+        <p style="font-size:105%;font-weight:600;padding-top:5px;padding-bottom:5px">
+			Ben je vegetarisch of eet je (ook) vlees? </p>
+        <div style="display:block;clear:both;height:auto;">
+          <label class="custom">
+            <input type="radio" name="radio" value="1" />
+            <span class="custom__input"></span> <span class="custom__text">Vegetatarisch</span>
+			</label>
+          <label class="custom">
+            <input type="radio" name="radio" value="2" />
+            <span class="custom__input"></span> <span class="custom__text">Vlees</span> </label>
+        </div>
+        <div style="display:block;clear:both;height:auto; margin-top:30px;"> <a href="#2" class="button">Volgende</a> </div>
+      </div>
+    </div>
+    <div id="2" class="section">
+      <div class="box">
+        <h2>Wat vind je lekker?</h2>
+        <p>Bij Uitgekookt hebben we een breed scala aan maaltijden vanuit verschillende keukens.</p>
+    <p style="font-size:105%;font-weight:600;padding-top:5px;padding-bottom:5px">Wat is jouw favoriete keuken?</p>
+        <div style="display:block;clear:both;height:auto;">
+          <label class="custom">
+            <input type="radio" name="radio2" value="italiaans" />
+            <span class="custom__input"></span> <span class="custom__text">Italiaans</span> </label>
+          <label class="custom">
+            <input type="radio" name="radio2" value="hollands" />
+            <span class="custom__input"></span> <span class="custom__text">Hollands</span> </label>
+          <label class="custom">
+            <input type="radio" name="radio2" value="hollands" />
+            <span class="custom__input"></span> <span class="custom__text">Oosters</span> </label>
+          <label class="custom">
+            <input type="radio" name="radio2" value="hollands" />
+            <span class="custom__input"></span> <span class="custom__text">Werelds</span> </label>
+			<label class="custom">
+            <input type="radio" name="radio2" value="hollands" />
+            <span class="custom__input"></span>
+			<span class="custom__text">Ik vind alles lekker</span>
+			</label>
+        </div>
+        <div style="display:block;clear:both;height:auto; margin-top:30px;">
+		<a href="#3" class="button">
+		Volgende
+		</a>
+		</div>
+      </div>
+    </div>
+	  
+	 <div id="3" class="section">
+      <div class="box">
+        <h2>Waarom zou je bij ons bestellen?</h2>
+        <p>We zijn erg benieuwd waarom je onze lekkere maaltijden overweegt. </p>
+    <p style="font-size:105%;font-weight:600;padding-top:5px;padding-bottom:5px">Wat past het beste bij jouw situatie?</p>
+        <div style="display:block;clear:both;height:auto;">
+          <label class="custom">
+            <input type="radio" name="radio3" value="italiaans" />
+            <span class="custom__input"></span> <span class="custom__text">Ik kan niet koken</span> </label>
+          <label class="custom">
+            <input type="radio" name="radio3" value="hollands" />
+            <span class="custom__input"></span> <span class="custom__text">Ik heb geen zin om te koken</span> </label>
+          <label class="custom">
+            <input type="radio" name="radio3" value="hollands" />
+            <span class="custom__input"></span> <span class="custom__text">Geen tijd om te koken</span> </label>
+			<label class="custom">
+            <input type="radio" name="radio3" value="hollands" />
+            <span class="custom__input"></span> <span class="custom__text">Ik ben nieuwsgierig</span>
+			</label>
+        </div>
+        <div style="display:block;clear:both;height:auto; margin-top:30px;">
+		<a href="#4" class="button">
+		Volgende
+		</a>
+		</div>
+      </div>
+    </div>
+    <div id="4" class="section">
+      <div class="box">
+        <h2>Bedankt voor het invullen</h2>
+        <p>Vul hieronder je e-mailadres in en we sturen je meteen wat inspiratie op basis van jouw keuzes. Wist je dat we momenteel een actie hebben waar je 4 maaltijden voor 20 euro kunt bestellen?</p>
+    <p style="font-size:105%;font-weight:600;padding-top:5px;padding-bottom:5px">Waar mogen we de resultaten naar toe mailen?</p>
+        <div style="display:block;clear:both;height:auto;">
+         <input type="text" name="text" placeholder="Voornaam" id="email"/>
+        </div>
+		    <div style="display:block;clear:both;height:auto;">
+         <input type="text" name="text" placeholder="Jouw e-mailadres.." id="email"/>
+        </div>
+        <div style="display:block;clear:both;height:auto; margin-top:10px;">
+		<a href="#4" class="button" style="width:250px;display:inline-block;">
+		Resultaten ontvangen
+		</a>
+		</div>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>
+</body>
+</html>
